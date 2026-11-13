@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="sr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#155eef">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="MyPocket">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<title>MyPocket</title>
+<style>
+:root{--blue:#155eef;--blue2:#edf3ff;--ink:#172033;--muted:#748096;--line:#e7ebf2;--bg:#f5f7fb;--green:#16845b;--red:#d14d55}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{background:linear-gradient(135deg,#155eef,#4385ff);color:white;padding:23px 18px 25px;border-radius:0 0 25px 25px}
+.top,main,.navinner{max-width:760px;margin:auto}.top{display:flex;justify-content:space-between;align-items:center}.logo{font-size:24px;font-weight:850;letter-spacing:-.8px}.logo span{color:#cfe0ff}.tag{font-size:11px;background:#ffffff25;border:1px solid #ffffff55;padding:6px 10px;border-radius:99px}
+.balance-label{margin-top:25px;color:#e1eaff;font-size:13px}.balance{font-size:37px;font-weight:850;letter-spacing:-1px;margin-top:3px}.balance small{font-size:19px}.summary{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}.sum{background:#ffffff20;border:1px solid #ffffff35;border-radius:14px;padding:11px}.sum span{font-size:12px;color:#e4edff}.sum strong{display:block;font-size:18px;margin-top:4px}
+main{padding:17px 15px 100px}.actions{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.action{background:white;border:1px solid var(--line);border-radius:14px;padding:14px;text-align:left;color:var(--ink);font-weight:700}.action b{display:block;font-size:23px;margin-bottom:5px}.action.income b{color:var(--green)}.action.expense b{color:var(--red)}
+.sectionhead{display:flex;justify-content:space-between;align-items:center;margin:23px 2px 12px}.sectionhead h2{font-size:18px;margin:0}.muted{font-size:12px;color:var(--muted)}
+.panel{background:white;border:1px solid var(--line);border-radius:16px;padding:15px}.transaction{display:flex;align-items:center;gap:11px;padding:12px 0;border-bottom:1px solid #eef0f4}.transaction:last-child{border:0;padding-bottom:0}.bubble{width:40px;height:40px;border-radius:13px;background:#f0f3f8;display:grid;place-items:center;font-size:19px}.txmain{flex:1;min-width:0}.txname{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.txmeta{font-size:12px;color:var(--muted);margin-top:3px}.amount{font-weight:800;white-space:nowrap}.plus{color:var(--green)}.minus{color:var(--red)}
+.view{display:none}.view.active{display:block}.field{margin:12px 0}.field label{display:block;font-size:13px;font-weight:700;margin-bottom:6px}.field input,.field select{width:100%;padding:12px;border:1px solid #dce2ec;border-radius:11px;background:white;font:inherit;color:var(--ink)}
+.primary{width:100%;padding:13px;border:0;border-radius:12px;background:var(--blue);color:white;font-weight:800;font-size:15px}.secondary{padding:9px 12px;border:0;border-radius:10px;background:var(--blue2);color:var(--blue);font-weight:700}
+.goal{margin-bottom:13px}.goalrow{display:flex;justify-content:space-between;gap:8px;font-weight:700}.track{height:9px;background:#edf0f5;border-radius:99px;overflow:hidden;margin-top:9px}.fill{height:100%;background:var(--blue);border-radius:99px}.empty{text-align:center;color:var(--muted);padding:22px 10px}
+nav{position:fixed;bottom:0;left:0;right:0;background:#ffffffed;backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:8px 8px calc(8px + env(safe-area-inset-bottom));z-index:5}.navinner{display:flex;justify-content:space-around}.navbtn{border:0;background:none;color:#7c879a;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;padding:4px 12px}.navbtn b{font-size:20px}.navbtn.active{color:var(--blue);font-weight:800}
+.note{font-size:12px;line-height:1.5;color:var(--muted);margin-top:12px}.premium{background:linear-gradient(135deg,#172f69,#155eef);color:white;border-radius:16px;padding:17px}.premium h2{margin:0 0 6px}.premium p{color:#dce7ff;font-size:13px;line-height:1.5}.premium button{background:white;color:#155eef;border:0;border-radius:10px;padding:10px 13px;font-weight:800}
+.modalback{display:none;position:fixed;inset:0;background:#10182888;z-index:10;align-items:flex-end;justify-content:center}.modalback.show{display:flex}.modal{background:white;border-radius:22px 22px 0 0;width:100%;max-width:560px;padding:20px 18px calc(22px + env(safe-area-inset-bottom))}.modal h2{margin:0 0 12px}.close{float:right;border:0;background:#f0f2f6;border-radius:50%;width:32px;height:32px;font-size:18px}
+@media(min-width:600px){main{padding-top:22px}.actions{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<header><div class="top"><div class="logo">My<span>Pocket</span></div><div class="tag">Tvoj novac, tvoj pregled</div></div>
+<div class="balance-label">UKUPNO STANJE</div><div class="balance" id="balance">0,00 <small>€</small></div>
+<div class="summary"><div class="sum"><span>Prihodi</span><strong id="incomeTotal">+0,00 €</strong></div><div class="sum"><span>Troškovi</span><strong id="expenseTotal">−0,00 €</strong></div></div></header>
+<main>
+<section id="home" class="view active">
+<div class="sectionhead"><h2>Brze akcije</h2><span class="muted">Upravljaj novcem</span></div>
+<div class="actions"><button class="action income" data-open="income"><b>＋</b>Dodaj prihod</button><button class="action expense" data-open="expense"><b>－</b>Dodaj trošak</button></div>
+<div class="sectionhead"><h2>Posljednje transakcije</h2><button class="secondary" id="allTx">Sve</button></div>
+<div class="panel" id="recent"></div>
+<div class="sectionhead"><h2>Cilj štednje</h2><button class="secondary" data-view="savings">Otvori</button></div>
+<div class="panel" id="goalPreview"></div>
+</section>
+<section id="transactions" class="view"><div class="sectionhead"><h2>Sve transakcije</h2><span class="muted" id="txCount"></span></div><div class="panel" id="allTransactions"></div></section>
+<section id="savings" class="view"><div class="sectionhead"><h2>Moja štednja</h2></div><div class="panel"><div class="field"><label for="goalName">Naziv cilja</label><input id="goalName" maxlength="40" placeholder="Npr. Novi bicikl"></div><div class="field"><label for="goalTarget">Koliko želiš da uštediš (€)</label><input id="goalTarget" type="number" min="1" step="0.01" placeholder="200"></div><button class="primary" id="saveGoal">Sačuvaj cilj</button><p class="note">Napredak se računa iz novca koji označiš kao ušteđen u svom budžetu. Ovo je jednostavan planer, ne bankovni račun.</p></div><div class="sectionhead"><h2>Napredak</h2></div><div class="panel" id="goalDetails"></div></section>
+<section id="profile" class="view"><div class="panel"><h2>MyPocket Premium</h2><p>U Premium verziji planiramo detaljnije izvještaje, više ciljeva štednje i izvoz podataka.</p><button class="primary" id="premium">Pogledaj Premium</button><p class="note">Premium i naplata nijesu aktivni u ovoj probnoj verziji.</p></div><div class="panel" style="margin-top:13px"><h2>Podaci i privatnost</h2><p class="note">Podaci se čuvaju samo u ovom browseru na ovom uređaju. Ne povezujemo se sa bankom i ne tražimo podatke kartice. Za sada nemoj unositi osjetljive podatke.</p><button class="secondary" id="export">Izvezi moje podatke</button> <button class="secondary" id="clear">Obriši sve podatke</button></div></section>
+</main>
+<nav><div class="navinner"><button class="navbtn active" data-view="home"><b>⌂</b>Početna</button><button class="navbtn" data-view="transactions"><b>↕</b>Transakcije</button><button class="navbtn" data-view="savings"><b>◎</b>Štednja</button><button class="navbtn" data-view="profile"><b>☻</b>Profil</button></div></nav>
+<div class="modalback" id="modal"><div class="modal"><button class="close" id="close">×</button><h2 id="modalTitle">Dodaj</h2><form id="txForm"><div class="field"><label for="txName">Naziv</label><input id="txName" required maxlength="50" placeholder="Npr. Džeparac ili užina"></div><div class="field"><label for="txAmount">Iznos (€)</label><input id="txAmount" type="number" min="0.01" step="0.01" required placeholder="10"></div><div class="field"><label for="txCategory">Kategorija</label><select id="txCategory"><option>Džeparac</option><option>Hrana</option><option>Prevoz</option><option>Škola</option><option>Zabava</option><option>Poklon</option><option>Ostalo</option></select></div><button class="primary" type="submit">Sačuvaj transakciju</button></form></div></div>
+<script>
+const $=id=>document.getElementById(id);
+let tx=JSON.parse(localStorage.getItem('mp_tx')||'[]'),goal=JSON.parse(localStorage.getItem('mp_goal')||'null'),mode='income';
+const euro=n=>Number(n).toLocaleString('sr-ME',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
+function save(){localStorage.setItem('mp_tx',JSON.stringify(tx));localStorage.setItem('mp_goal',JSON.stringify(goal))}
+function totals(){let inc=tx.filter(x=>x.type==='income').reduce((a,x)=>a+x.amount,0),exp=tx.filter(x=>x.type==='expense').reduce((a,x)=>a+x.amount,0);return{inc,exp,balance:inc-exp}}
+function row(x){return `<div class="transaction"><div class="bubble">${x.type==='income'?'↗':'↘'}</div><div class="txmain"><div class="txname">${safe(x.name)}</div><div class="txmeta">${safe(x.category)} · ${new Date(x.date).toLocaleDateString('sr-ME')}</div></div><div class="amount ${x.type==='income'?'plus':'minus'}">${x.type==='income'?'+':'−'}${euro(x.amount)}</div></div>`}
+function safe(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function goalHtml(){if(!goal)return '<div class="empty">Još nemaš cilj štednje. Napravi prvi cilj!</div>';let saved=Math.max(0,totals().balance),pct=Math.min(100,saved/goal.target*100);return `<div class="goal"><div class="goalrow"><span>${safe(goal.name)}</span><span>${euro(saved)} / ${euro(goal.target)}</span></div><div class="track"><div class="fill" style="width:${pct}%"></div></div><p class="note">${Math.round(pct)}% cilja ostvareno. Ovo je procjena na osnovu unosa u aplikaciji.</p></div>`}
+function render(){let t=totals();$('balance').innerHTML=euro(t.balance).replace(' €','')+' <small>€</small>';$('incomeTotal').textContent='+'+euro(t.inc);$('expenseTotal').textContent='−'+euro(t.exp);$('recent').innerHTML=tx.length?tx.slice(0,5).map(row).join(''):'<div class="empty">Još nema transakcija. Dodaj prvi prihod ili trošak.</div>';$('allTransactions').innerHTML=tx.length?[...tx].reverse().map(row).join(''):'<div class="empty">Transakcije će se pojaviti ovdje.</div>';$('txCount').textContent=tx.length+' unosa';$('goalPreview').innerHTML=goalHtml();$('goalDetails').innerHTML=goalHtml();if(goal){$('goalName').value=goal.name;$('goalTarget').value=goal.target}}
+function view(v){document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));$(v).classList.add('active');document.querySelectorAll('.navbtn').forEach(b=>b.classList.toggle('active',b.dataset.view===v));window.scrollTo(0,0)}
+document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>view(b.dataset.view)));
+document.querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click',()=>openTx(b.dataset.open)));
+function openTx(type){mode=type;$('modalTitle').textContent=type==='income'?'Dodaj prihod':'Dodaj trošak';$('modal').classList.add('show')}
+$('close').onclick=()=>$('modal').classList.remove('show');$('modal').onclick=e=>{if(e.target===$('modal'))$('modal').classList.remove('show')};
+$('txForm').onsubmit=e=>{e.preventDefault();tx.unshift({id:Date.now(),type:mode,name:$('txName').value.trim(),amount:Number($('txAmount').value),category:$('txCategory').value,date:new Date().toISOString()});save();e.target.reset();$('modal').classList.remove('show');render()};
+$('allTx').onclick=()=>view('transactions');
+$('saveGoal').onclick=()=>{let name=$('goalName').value.trim(),target=Number($('goalTarget').value);if(!name||target<=0){alert('Unesi naziv cilja i iznos veći od nule.');return}goal={name,target};save();render();alert('Cilj štednje je sačuvan!')};
+$('premium').onclick=()=>alert('Premium funkcije i plaćanje još nijesu aktivni. Ova verzija je besplatni prototip.');
+$('clear').onclick=()=>{if(confirm('Obrisati sve transakcije i cilj štednje sa ovog uređaja?')){tx=[];goal=null;save();render()}};
+$('export').onclick=()=>{let blob=new Blob([JSON.stringify({transactions:tx,savingsGoal:goal},null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='mypocket-podaci.json';a.click();URL.revokeObjectURL(a.href)};
+render();
+if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script></body></html>
